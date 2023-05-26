@@ -26,14 +26,14 @@
   ],
   "homepage": "https://github.com/chatch/hashed-timelock-contract-ethereum#README.md",
   "dependencies": {
-    "@truffle/contract": "^4.2.14",
-    "openzeppelin-solidity": "^2.5.1"
+    "@truffle/contract": "^4.6.22",
+    "openzeppelin-solidity": "^3.4.2"
   },
   "devDependencies": {
-    "eslint": "^7.5.0",
+    "eslint": "^8.41.0",
     "ethlint": "^1.2.5",
     "ganache-cli": "^6.12.2",
-    "truffle": "^5.1.36",
+    "truffle": "^5.9.2",
     "truffle-assertions": "^0.9.2"
   }
 }

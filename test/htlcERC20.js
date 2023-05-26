@@ -47,6 +47,14 @@ contract('HashedTimelockERC20', accounts => {
     )
   })
 
+  
+  it('approve() should provide at least the approved allowance()', async () => {
+    await token.approve(htlc.address, 0, {from: sender}) // ensure 0
+    await token.approve(htlc.address, tokenAmount, {from: sender})
+    const allowance = await token.allowance(sender, htlc.address)
+    assert.equal(allowance.toNumber(), tokenAmount)
+  })
+  
   it('newContract() should create new contract and store correct details', async () => {
     const hashPair = newSecretHashPair()
     const newContractTx = await newContract({
@@ -193,33 +201,33 @@ contract('HashedTimelockERC20', accounts => {
     }
   })
 
-  // it('withdraw() should fail after timelock expiry', async () => {
-  //   const hashPair = newSecretHashPair()
-  //   const curBlock = await web3.eth.getBlock('latest')
-  //   const timelock2Seconds = curBlock.timestamp + 2
+  it.skip('withdraw() should fail after timelock expiry', async () => {
+    const hashPair = newSecretHashPair()
+    const curBlock = await web3.eth.getBlock('latest')
+    const timelock2Seconds = curBlock.timestamp + 2
 
-  //   const newContractTx = await newContract({
-  //     hashlock: hashPair.hash,
-  //     timelock: timelock2Seconds,
-  //   })
-  //   const contractId = txContractId(newContractTx)
+    const newContractTx = await newContract({
+      hashlock: hashPair.hash,
+      timelock: timelock2Seconds,
+    })
+    const contractId = txContractId(newContractTx)
 
-  //   // wait one second so we move past the timelock time
-  //   return new Promise((resolve, reject) => {
-  //     setTimeout(async () => {
-  //       // attempt to withdraw and check that it is not allowed
-  //       try {
-  //         await htlc.withdraw(contractId, hashPair.secret, {from: receiver})
-  //         reject(
-  //           new Error('expected failure due to withdraw after timelock expired')
-  //         )
-  //       } catch (err) {
-  //         assert.isTrue(err.message.startsWith(REQUIRE_FAILED_MSG))
-  //         resolve({message: 'success'})
-  //       }
-  //     }, 2000)
-  //   })
-  // })
+    // wait one second so we move past the timelock time
+    return new Promise((resolve, reject) => {
+      setTimeout(async () => {
+        // attempt to withdraw and check that it is not allowed
+        try {
+          await htlc.withdraw(contractId, hashPair.secret, {from: receiver})
+          reject(
+            new Error('expected failure due to withdraw after timelock expired')
+          )
+        } catch (err) {
+          assert.isTrue(err.message.startsWith(REQUIRE_FAILED_MSG))
+          resolve({message: 'success'})
+        }
+      }, 2000)
+    })
+  })
 
   // Remove skip if using timelock guard (currently commented out)
   it.skip('refund() should pass after timelock expiry', async () => {
@@ -257,7 +265,7 @@ contract('HashedTimelockERC20', accounts => {
   })
 
   // Remove skip if using timelock guard (currently commented out)
-  it.skip('refund() should fail before the timelock expiry', async () => {
+  it('refund() should fail before the timelock expiry', async () => {
     const newContractTx = await newContract()
     const contractId = txContractId(newContractTx)
     try {
