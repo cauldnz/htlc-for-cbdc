@@ -1,4 +1,6 @@
-pragma solidity 0.5.16;
+// SPDX-License-Identifier: GPL
+
+pragma solidity ^0.6.0;
 
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
@@ -211,7 +213,7 @@ contract HashedTimelockERC20 {
     /**
      * @dev Get contract details.
      * @param _contractId HTLC contract id
-     * @return All parameters in struct LockContract for _contractId HTLC
+     * @return sender parameters in struct LockContract for _contractId HTLC
      */
     function getContract(bytes32 _contractId)
         public

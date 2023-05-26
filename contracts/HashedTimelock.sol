@@ -1,4 +1,6 @@
-pragma solidity 0.5.16;
+// SPDX-License-Identifier: GPL
+
+pragma solidity ^0.6.0;
 
 /**
  * @title Hashed Timelock Contracts (HTLCs) on Ethereum ETH.
@@ -181,7 +183,7 @@ contract HashedTimelock {
     /**
      * @dev Get contract details.
      * @param _contractId HTLC contract id
-     * @return All parameters in struct LockContract for _contractId HTLC
+     * @return sender All parameters in struct LockContract for  HTLC
      */
     function getContract(bytes32 _contractId)
         public
