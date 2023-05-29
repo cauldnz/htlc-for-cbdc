@@ -26,6 +26,7 @@
   ],
   "homepage": "https://github.com/chatch/hashed-timelock-contract-ethereum#README.md",
   "dependencies": {
+    "@openzeppelin/contracts": "^4.9.0",
     "@truffle/contract": "^4.6.22",
     "openzeppelin-solidity": "^3.4.2"
   },
