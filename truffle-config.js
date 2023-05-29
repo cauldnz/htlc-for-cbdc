@@ -3,7 +3,12 @@ module.exports = {
     development: {
       host: "127.0.0.1",
       port: 7545, // default for Ganache
-      network_id: "4447"
-    }
-  }
-}
+      network_id: "4447",
+    },
+  },
+  compilers: {
+    solc: {
+      version: "^0.6.0",
+    },
+  },
+};
