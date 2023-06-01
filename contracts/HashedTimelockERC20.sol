@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL
 
-pragma solidity ^0.5.0;
+pragma solidity ^0.8.9;
 
-import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 /**
 * @title Hashed Timelock Contracts (HTLCs) on Ethereum ERC20 tokens.
@@ -62,7 +62,7 @@ contract HashedTimelockERC20 {
         // only requirement is the timelock time is after the last blocktime (now).
         // probably want something a bit further in the future then this.
         // but this is still a useful sanity check:
-        require(_time > now, "timelock time must be in the future");
+        require(_time > block.timestamp, "timelock time must be in the future");
         _;
     }
     modifier contractExists(bytes32 _contractId) {
@@ -82,14 +82,14 @@ contract HashedTimelockERC20 {
         // This check needs to be added if claims are allowed after timeout. That is, if the following timelock check is commented out
         require(contracts[_contractId].refunded == false, "withdrawable: already refunded");
         // if we want to disallow claim to be made after the timeout, uncomment the following line
-        // require(contracts[_contractId].timelock > now, "withdrawable: timelock time must be in the future");
+        // require(contracts[_contractId].timelock > block.timestamp, "withdrawable: timelock time must be in the future");
         _;
     }
     modifier refundable(bytes32 _contractId) {
         require(contracts[_contractId].sender == msg.sender, "refundable: not sender");
         require(contracts[_contractId].refunded == false, "refundable: already refunded");
         require(contracts[_contractId].withdrawn == false, "refundable: already withdrawn");
-        require(contracts[_contractId].timelock <= now, "refundable: timelock not yet passed");
+        require(contracts[_contractId].timelock <= block.timestamp, "refundable: timelock not yet passed");
         _;
     }
 
